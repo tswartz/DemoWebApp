@@ -16,12 +16,17 @@ function getWeather(searchQuery) {
   if (searchQuery) {
     params.q = searchQuery;
   } else {
-    params.id = 4930956 // id for Boston, you can find city codes here http://bulk.openweathermap.org/sample/
+    params.id = 4930956 // defaults to id for Boston, you can find city codes here http://bulk.openweathermap.org/sample/
   }
-  $.ajax(url + $.param(params)).done(function (data) {
-    $('.city').text(data.name);
-    $('.temp').text(data.main.temp);
-    $('.summary').html(parseSummary(data));
+  $.ajax(url + $.param(params), {
+    success: function (data) {
+      $('.city').text(data.name);
+      $('.temp').text(data.main.temp + '°F');
+      $('.summary').html(parseSummary(data));
+    },
+    error: function (error) {
+      $('.error-message').text('An error occurred :(');
+    }
   });
 }
 
