@@ -3,14 +3,14 @@ $(document).ready(function() {
 });
 
 function searchWeather() {
-  var searchQuery = $('.search').val();
+  var searchQuery = $('.search').val(); // grab value from search input
   getWeather(searchQuery);
 }
 
 function getWeather(searchQuery) {
-  var url = 'http://api.openweathermap.org/data/2.5/weather?';
+  var url = 'http://api.openweathermap.org/data/2.5/weather?'; // url for the API
   var params = {
-    APPID: appKey, // this is being pulled in from public/js/appKey.js which I have hidden from Git, don't expose API keys on GitHub!
+    APPID: appKey, // my API key - this is being pulled in from public/js/appKey.js which I have hidden from Git, don't expose API keys on GitHub!
     units: 'imperial' // let's use fahrenheit. murica!
   };
   if (searchQuery) {
@@ -20,8 +20,8 @@ function getWeather(searchQuery) {
   }
   $.ajax(url + $.param(params), {
     success: function (data) {
-      $('.city').text(data.name);
-      $('.temp').text(data.main.temp + '°F');
+      $('.city').text(`${data.name}, ${getCountryName(data.sys.country)}`);
+      $('.temp').text(`${data.main.temp} °F`);
       $('.summary').html(parseSummary(data));
     },
     error: function (error) {
@@ -32,6 +32,7 @@ function getWeather(searchQuery) {
 
 function parseSummary(data) {
   var description = data.weather[0].description;
+  // the api gives you an icon file name, all icon pngs are available at http://openweathermap.org/img/w
   var icon = data.weather[0].icon;
   var iconSrc = `http://openweathermap.org/img/w/${icon}.png`;
   return `<span>${description}</span><img src="${iconSrc}"/>`;
