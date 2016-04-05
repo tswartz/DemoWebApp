@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="stylesheets/main.css"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="/js/appKey.js"></script>
+  <script src="/js/countryCodes.js"></script>
   <script src="/js/main.js"></script>
 </head>
 
@@ -13,15 +14,21 @@
   <h1>OMG look at this weather API</h1>
 
   <div class="weather-wrapper">
+
 	  <h2 class="city"></h2>
 	  <h3 class="temp"></h3>
 	  <p class="summary"></p>
 
-	  <input class="search" type="text" />
-	  <button type="button" onclick="searchWeather()">
-	    Search
-	  </button>
-	  <span class="error-message"></span>
+	  <hr />
+	  
+	  <div class="search-wrapper">
+		  <input class="search" type="text" />
+		  <button type="button" onclick="searchWeather()">
+		    Search
+		  </button>
+		  <span class="error-message"></span>
+		</div>
+
 	 </div>
 
 </body>

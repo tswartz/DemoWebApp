@@ -9,13 +9,21 @@ h1 {
 }
 
 .weather-wrapper {
-	padding: 0 20px;
+  padding: 0 20px;
+}
+
+.temp {
+  margin-bottom: 0;
 }
 
 .summary {
-  font-size: 30px;
+  margin-top: 0;
 }
 
 .summary > * {
-	vertical-align: middle;
+  vertical-align: middle;
+}
+
+.search-wrapper {
+  padding: 20px 0;
 }
