@@ -1,5 +1,6 @@
 body {
   background-color: #d0e4fe;
+  font-family: "Helvetica";
 }
 
 h1 {
@@ -7,7 +8,14 @@ h1 {
   text-align: center;
 }
 
-p {
-  font-family: "Courier New";
+.weather-wrapper {
+	padding: 0 20px;
+}
+
+.summary {
   font-size: 30px;
+}
+
+.summary > * {
+	vertical-align: middle;
 }
