@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  getWeather();
+  //getWeather();
 });
 
 function searchWeather() {
