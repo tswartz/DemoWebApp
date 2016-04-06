@@ -27,3 +27,7 @@ h1 {
 .search-wrapper {
   padding: 20px 0;
 }
+
+.error-message {
+  color: red;
+}

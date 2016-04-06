@@ -20,7 +20,8 @@ function getWeather(searchQuery) {
   }
   $.ajax(url + $.param(params), {
     success: function (data) {
-      $('.city').text(`${data.name}, ${getCountryName(data.sys.country)}`);
+      var countryName = getCountryName(data.sys.country);
+      $('.city').text(`${data.name}, ${countryName}`);
       $('.temp').text(`${data.main.temp} °F`);
       $('.summary').html(parseSummary(data));
     },
