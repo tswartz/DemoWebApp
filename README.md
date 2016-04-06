@@ -1,35 +1,45 @@
-# DemoWebApp
+# DemoWebApp - Fun with APIs!!
 
-Check it out at: https://ancient-forest-87393.herokuapp.com/
+I made an app that fetches and displays weather data from the OpenWeatherMap API. Check it out at http://sheltered-wave-81640.herokuapp.com/
 
-Before starting:
-- [ ] Create Heroku account (primary language = node) - https://signup.heroku.com/
-  - [ ] download and install command line tools - https://toolbelt.heroku.com/
-- [ ] Create Github account - https://github.com/join
-  - [ ] download and install command line tools - https://help.github.com/articles/set-up-git/#setting-up-git
-- [ ] download and install Node.js - https://nodejs.org/en/download/
-- [ ] download and install a text editor (I recommend submlime text- https://www.sublimetext.com/3)
+## APIs are great
+API stands for **Application Program Interface**. APIs are basically a set of operations with specific inputs/outputs that let you interact with something, like a database, web service, or hardware (see https://en.wikipedia.org/wiki/Application_programming_interface for more info).  In this case, we will be using Web APIs, which allow you to send and receive data from a web service. For example, let's say you wanted to display your Twitter feed on your website. You could use the Twitter API to grab the tweet history of a specific user (in this case, that user would be you!). Most large-scale software companies like Google, Twitter, Facebook (and HubSpot!!) have APIs that let you use their services and data in your own applications. Also, many different kinds of data can be accessed via some API - weather, movie information/reviews, sports stats, restaurants, maps, etc.
 
-To set up and run:
+## How (most) Web APIs work
+You can grab information from a web service using HTTP, which is how you would access just about any other website. Most web APIs can be accessed by sending a request to some URL. In this repo, I send a request to `http://api.openweathermap.org/data/2.5/weather`. There are a couple types of HTTP requests: `GET`, `POST`, `DELETE`, `PUT`, etc. GET is for when you want to retrieve data from a service, like reading a specific item from a database. For the purposes of this demo I won't go into the other methods but feel free to read up on what the other methods do http://www.tutorialspoint.com/http/http_methods.htm. This app uses a GET request to grab today's weather data for a given city - note that my API request is read-only, it doesn't actually change anything in OpenWeatherMap.
 
-1. Make a copy of my existing project on github
-  - Fork the project at https://github.com/zsobin/DemoWebApp.git
+## How to use an API
 
-2. Bring your new copy onto your computer from github 
-  - `cd ~/Desktop`
-  - `git clone https://github.com/YourUserName/DemoWebApp.git`
-  - `cd DemoWebApp`
-  - `ls`
+### All APIs are different
+Most Web APIs work in the same way with HTTP but all have their own specifications on how to use them. Each API has its own URL structure and different kinds of methods. To get the weather for Boston, I send a GET request to `http://api.openweathermap.org/data/2.5/weather?id=4930956&units=imperial`. In general, you start off with some base URL - `api.openweathermap.org/` - and add more specific paths and query parameters to tell the API exactly what information you want. So in this case, adding `data/2.5/weather` means you want the weather for some location, and adding `id=4930956&units=imperial` means you want the weather for the city with id 4930956 (Boston) and you want it in imperial units (since I want to display the temperature in Fahrenheit rather than Kelvin or Celsius).
 
-3. Initialize it as a heroku project
-  - `heroku login`
-  - `heroku create`
+The data that is returned will also be different between APIs. Most web APIs return data in the JSON format, which is just very simple object format i.e. `{key: value}`. OpenWeatherMap returns a large JSON object, which looks like this: 
 
-4. Send the heroku project to heroku’s servers and view it online
-  - `git push heroku master`
-  - `heroku open`
+```
+{
+  "coord":{"lon":-71.06,"lat":42.36},
+  "weather":[{"id":500,"main":"Rain","description":"light rain","icon":"10d"}],
+  "base":"cmc stations",
+  "main":{"temp":37.42,"pressure":1029,"humidity":57,"temp_min":33.8,"temp_max":50},
+  "wind":{"speed":8.05,"deg":60},"rain":{"1h":0.3},
+  "clouds":{"all":1},
+  "dt":1459956213,
+  "sys":{"type":1,"id":1801,"message":0.0063,"country":"US","sunrise":1459937777,"sunset":1459984620},
+  "id":4930956,
+  "name":"Boston",
+  "cod":200
+}
+```
 
-5. Install the project’s dependencies and run the project on your local servers
-  - `npm install`
-  - `heroku local web`
-  - check out http://localhost:5000
+A different weather API will return a JSON object in a completely different format. Either way, you can easily take that object and pull out the information you want.
+
+### Documentation is your best friend
+The only way to know how to use a certain API like this is to go to its website and read the documentation there. Any decent API will provide instructions and documentation for the different kinds of requests you can send and what information will be returned. OpenWeatherMap has extensive docs detailing what kind of data you can grab and what exactly will be returned.
+
+### Authorization
+Most APIs require some form of authorization to make sure that not just anyone can send a request to it. Usually, you can get authorization by making an account with the service and getting an **API key** (sometimes called an access token). This is a special string that you send along with the request - usually as a query parameter like `apiKey=[your api key]` - that lets the API know that you're an authorized user. APIs all have their own way of doing this and have instructions on how to get started, another reason to read the documentation!
+
+**Important:** API keys are sensitive information. You don't want just anyone to see them, so it's good practice to NOT expose them in your code on GitHub. I hid my API key by setting it as an **environment variable** (just a special value that is accessed by some key) on Heroku and accessing it in my app. I set an environment variable called API_KEY to the key given to me by OpenWeatherMap. See https://devcenter.heroku.com/articles/config-vars to set the variable and https://devcenter.heroku.com/articles/heroku-local#copy-heroku-config-vars-to-your-local-env-file to set it in your repo and access it locally. Then I accessed it in `views/pages/index.ejs` via `<%= process.env.API_KEY %>`.
+
+## Integrating an API in your app
+To access an API and use its data in your app, you'll need a way to actually send a request to it and handle the returned data. If you take a look at `public/js/main.js` you'll see my app uses a method called `ajax` to send the request to OpenWeatherMaps's servers. It also handles the returned information in 2 types of functions: a success handler and an error handler. The success handler function gets called when the request goes smoothly comes back with the desired data. It takes the weather data, pulls out the information I want, and displays it on my webpage using jQuery. The error handler function is called when something goes wrong - this is super super important when using APIs, requests can sometimes run into an error and in most cases will return some form of error message. Error handling is necessary so the user knows what's going on - my app shows a basic error message when this happens.
