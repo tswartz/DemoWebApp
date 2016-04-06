@@ -31,9 +31,13 @@ function getWeather(searchQuery) {
 }
 
 function parseSummary(data) {
-  var description = data.weather[0].description;
-  // the api gives you an icon file name, all icon pngs are available at http://openweathermap.org/img/w
-  var icon = data.weather[0].icon;
-  var iconSrc = `http://openweathermap.org/img/w/${icon}.png`;
-  return `<span>${description}</span><img src="${iconSrc}"/>`;
+  if (data.weather) {
+    var weatherItems = data.weather.map(function(weatherItem) {
+      var description = weatherItem.description;
+      // the api gives you an icon file name, all icon pngs are available at http://openweathermap.org/img/w
+      var iconSrc = 'http://openweathermap.org/img/w/' + weatherItem.icon + '.png';
+      return `<div class="summary-item"><span>${description}</span><img src="${iconSrc}"/></div>`;
+    });
+    return weatherItems.join('');
+  }
 }
