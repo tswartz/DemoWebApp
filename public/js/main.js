@@ -10,7 +10,7 @@ function searchWeather() {
 function getWeather(searchQuery) {
   var url = 'http://api.openweathermap.org/data/2.5/weather?'; // url for the API
   var params = {
-    APPID: appKey, // my API key - this is being pulled in from public/js/appKey.js which I have hidden from Git, don't expose API keys on GitHub!
+    APPID: apiKey, // coming from apiKey in index.ejs
     units: 'imperial' // let's use fahrenheit. murica!
   };
   if (searchQuery) {
