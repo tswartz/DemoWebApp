@@ -32,7 +32,7 @@ The data that is returned will also be totally different between APIs. Most web 
 }
 ```
 
-A different weather API would probably return similar data, i.e. temperature, wind speed, chance of rain, chance of Blue Ivy sightings, but it would return a JSON object in a completely different format. Either way, you can easily take that object and pull out the information you want.
+A different weather API would probably return similar data, i.e. temperature, wind speed, chance of rain, chance of Beyonce sightings, but it would return a JSON object in a completely different format. Either way, you can easily take that object and pull out the information you want.
 
 ### Documentation is your best friend
 The only way to know how to use a certain API like this is to go to its website and read the documentation there. Any decent API will provide instructions and documentation for the different kinds of requests you can send and what information will be sent back. OpenWeatherMap has extensive docs detailing what kind of weather data you can grab and what will be returned. As the saying goes: "Docs are a girl's best friend".
@@ -50,18 +50,37 @@ To access an API and use its data in your app, you'll need a way to actually sen
 # Tutorial Tyme
 So here's the good stuff - how to actually build this krazy app. Each step will include instructions for OpenWeatherMap API if you wanna use it and general instructions that should apply to most APIs where necessary. If you decide to use a different API and you're getting stuck with how to use it don't hesitate to ask one of us lovely volunteers for a hand!
 
-Note: this tutorial assumes you have the original demo app cloned and up and running
+Note: this tutorial assumes that you have Zoe's demo app cloned, and that you have Heroku up and running
 
 1. Choose your API. What kind of data do you want to use? The world is your oyster. If you're feeling like just getting a chill practice run in API World for today, use OpenWeatherMap!
 2. Most API sites, including OpenWeatherMap, will want you to create an account first before using their services, create that account!
-3. Look around in your shiny new account for anything about API keys or access tokens, in OpenWeatherMap it's here https://home.openweathermap.org/api_keys
+3. Look around in your shiny new account for anything about API keys or access tokens, in OpenWeatherMap it's here https://home.openweathermap.org/api_keys Chances are it'll be a bunch of numbers and/or letters all jumbled up.
 4. Grab that API key and run `heroku config:set API_KEY=whateveryourapikeyis` (Substituting whateveryourapikeyis for whatever your API key is)
 5. Run `heroku config:get API_KEY -s  >> .env`. This way you can use API_KEY in your local environment for testing!
-6. Go into `index.ejs` and pop in
+6. Go into `index.ejs` and make sure that `<script>var apiKey = '<%= process.env.API_KEY %>';</script>` is in your head tag if it's not already there! Make sure it comes before `<script src="/js/main.js"></script>`. The order matters here because `main.js` will want to use `API_KEY`.
+7. To actually call the API, we'll need jQuery to use its `ajax` method and then set the retrieved data in our HTML (but if there's a different library you like to use for making HTTP requests go for it!). In that same head tag, insert `<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>` before the `main.js` script tag.
+
+First, let's display the weather for one city. Let's do Boston! If you're using a different API you can mirror what I'm doing while naming things to whatever is relevant to the type of data you're dealing with. Also the url/parameters for your API will be different. PS - Feel free to just copy/paste from my code. The code for this tutorial will look a little different from my actual code for steps 8-11 while we just try to get a single API request working.
+
+8. We'll just display the city and temperature for now. Insert `<div class="city"></div><div class="temp"></div>` in your HTML body.
+9. Time to actually use the API in `main.js`! At the top of your main.js file insert the following:
+
 ```
-<script>
-  var apiKey = '<%= process.env.API_KEY %>';
-</script>
+$(document).ready(function() {
+  getWeather();
+});
 ```
-in your head tag if it's not already there! Make sure it comes before your script tag that links to your `main.js` file. The order matters here because `main.js` will want to use `API_KEY`.
-7. Time to actually use the API in `main.js`!  
+
+10. Now we'll create a function called `getWeather` that will retrieve the weather for Boston. We'll have to build the URL for the API request according to OpenWeatherMap's specifications. Note that we're using `apiKey` in here which was defined in the head of `index.ejs` and that we're setting the id to `4930956`, aka Boston.
+
+```
+function getWeather() {
+  var url = 'http://api.openweathermap.org/data/2.5/weather?units=imperial&id=4930956&APPID=' + apiKey;
+  $.ajax(url, {
+    success: function (data) {
+      $('.city').text(data.name);
+      $('.temp').text(data.main.temp + ' °F');
+    }
+  });
+}
+```
