@@ -120,5 +120,20 @@ Note: this tutorial assumes that you have Zoe's demo app cloned, and that you ha
   }
   ```
 15. Try re-running your app. The Boston temperature should show by default as it did before. Type in a different city anywhere in the world and see if it works!!!!
+16. API calls don't always go smoothly. We need to add some error messaging in case things go wrong so the user isn't left in the dark. Normally we would want to include details as to what went wrong but a generic error message will do for now. In your HTML, add this to your HTML body: `<div class="error-message"></div>`
+17. Modify your AJAX call to add an error handler:
+
+  ```
+  $.ajax(url + $.param(params), {
+    success: function (data) {
+      $('.city').text(data.name);
+      $('.temp').text(data.main.temp + ' °F');
+    }, error: function (error) {
+      $('.error-message').text('An error occurred!');
+    }
+  });
+  ```
+
+You can test your error handler by messing up the API URL in your ajax call on purpose. The API call should result in a 404 which should be caught in your error handler. If you see your error message after re-running the app, it's good to go!
 
 Woo you did it! That was a wild ride. Try taking this further - you can display more data in your HTML, like precipitation or wind speeds. All you have to do is access the other data in the returned JSON object from the API call. Try making this look better too! You can use CSS, Bootstrap, and other libraries to make your app look sleeker and more professional.
