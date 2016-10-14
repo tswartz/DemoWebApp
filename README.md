@@ -59,26 +59,25 @@ Note: this tutorial assumes that you have Zoe's demo app cloned, and that you ha
 5. Run `heroku config:get API_KEY -s  >> .env`. This way you can use API_KEY in your local environment for testing!
 6. Go into `index.ejs` and make sure that `<script>var apiKey = '<%= process.env.API_KEY %>';</script>` is in your head tag if it's not already there! Make sure it comes before `<script src="/js/main.js"></script>`. The order matters here because `main.js` will want to use `API_KEY`.
 7. To actually call the API, we'll need jQuery to use its `ajax` method and then set the retrieved data in our HTML (but if there's a different library you like to use for making HTTP requests go for it!). In that same head tag, insert `<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>` before the `main.js` script tag.
+8. First, let's display the weather for one city. Let's do Boston! If you're using a different API you can mirror what I'm doing while keeping it relevant to the type of data you're dealing with. Also, the url/parameters for your API will be different. PS - Feel free to just copy/paste from my code. The code for this tutorial will look a little different from my actual code for steps 8-11 while we try to get a single API request working. We'll just display the city and temperature for now. Insert `<div class="city"></div><div class="temp"></div>` in your HTML body.
+9. Time to actually use the API in `main.js`! At the top of your main.js file insert the following:
 
-First, let's display the weather for one city. Let's do Boston! If you're using a different API you can mirror what I'm doing while naming things to whatever is relevant to the type of data you're dealing with. Also the url/parameters for your API will be different. PS - Feel free to just copy/paste from my code. The code for this tutorial will look a little different from my actual code for steps 8-11 while we just try to get a single API request working.
-
-8. We'll just display the city and temperature for now. Insert `<div class="city"></div><div class="temp"></div>` in your HTML body.
-9. Time to actually use the API in `main.js`! At the top of your main.js file insert the following: ```
-$(document).ready(function() {
-  getWeather();
-});
-```
-
+  ```
+  $(document).ready(function() {
+    getWeather();
+  });
+  ```
 10. Now we'll create a function called `getWeather` that will retrieve the weather for Boston. We'll have to build the URL for the API request according to OpenWeatherMap's specifications. Note that we're using `apiKey` in here which was defined in the head of `index.ejs` and that we're setting the id to `4930956`, aka Boston.
 
-```
-function getWeather() {
-  var url = 'http://api.openweathermap.org/data/2.5/weather?units=imperial&id=4930956&APPID=' + apiKey;
-  $.ajax(url, {
-    success: function (data) {
-      $('.city').text(data.name);
-      $('.temp').text(data.main.temp + ' °F');
-    }
-  });
-}
-```
+  ```
+  function getWeather() {
+    var url = 'http://api.openweathermap.org/data/2.5/weather?units=imperial&id=4930956&APPID=' + apiKey;
+    $.ajax(url, {
+      success: function (data) {
+        $('.city').text(data.name);
+        $('.temp').text(data.main.temp + ' °F');
+      }
+    });
+  }
+  ```
+11. Give it a run! It should display the Boston weather when you first load your site.
