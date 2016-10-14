@@ -63,9 +63,7 @@ Note: this tutorial assumes that you have Zoe's demo app cloned, and that you ha
 First, let's display the weather for one city. Let's do Boston! If you're using a different API you can mirror what I'm doing while naming things to whatever is relevant to the type of data you're dealing with. Also the url/parameters for your API will be different. PS - Feel free to just copy/paste from my code. The code for this tutorial will look a little different from my actual code for steps 8-11 while we just try to get a single API request working.
 
 8. We'll just display the city and temperature for now. Insert `<div class="city"></div><div class="temp"></div>` in your HTML body.
-9. Time to actually use the API in `main.js`! At the top of your main.js file insert the following:
-
-```
+9. Time to actually use the API in `main.js`! At the top of your main.js file insert the following: ```
 $(document).ready(function() {
   getWeather();
 });
