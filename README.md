@@ -51,6 +51,7 @@ To access an API and use its data in your app, you'll need a way to actually sen
 So here's the good stuff - how to actually build this krazy app. Each step will include instructions for OpenWeatherMap API if you wanna use it and general instructions that should apply to most APIs where necessary. If you decide to use a different API and you're getting stuck with how to use it don't hesitate to ask one of us lovely volunteers for a hand! If you are using OpenWeatherMap feel free to just copy/paste from my code, but the code for this tutorial will look a little different and simpler.
 
 Note: this tutorial assumes that you have Zoe's demo app cloned, and that you have Heroku up and running
+*ANOTHER NOTE: if you're not that familiar with APIs I'd recommend staying away from more complicated APIs like Google and sticking with something more simple, like OpenWeatherMap!*
 
 1. Choose your API. What kind of data do you want to use? The world is your oyster. If you're feeling like just getting a chill practice run in API World for today, use OpenWeatherMap!
 2. Most API sites, including OpenWeatherMap, will want you to create an account first before using their services, create that account!
